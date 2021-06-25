@@ -13,18 +13,30 @@ class HBNBCommand(cmd.Cmd):
     """
     prompt = '(hbnb) '
 
+    def emptyline(self):
+        """
+            Called when emptyline is entered in response to the prompt.
+            Overrides the superclass function.
+        """
+        pass
+
     def do_quit(self, line):
         """
-            Exit the program
+            Exit
         """
         return True
 
     def do_EOF(self, line):
         """
-            defines action when end of file is reached
+            Exit
         """
         return True
 
+    def help_quit(self):
+        print("Exit the command line")
+
+    def help_EOF(self):
+        print("Exit the command line")
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
