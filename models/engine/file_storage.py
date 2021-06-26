@@ -6,6 +6,12 @@
 import json
 import os.path
 from models.base_model import BaseModel
+from models.user import User
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
 
 
 class FileStorage():
@@ -52,6 +58,6 @@ class FileStorage():
 
             my_objs = {}
             for key, value in obj_dicts.items():
-                if value['__class__'] == 'BaseModel':
-                   my_objs[key] = BaseModel(**value)
+                class_name = value['__class__']
+                my_objs[key] = eval(class_name)(**value)
             self.__objects.update(my_objs)
