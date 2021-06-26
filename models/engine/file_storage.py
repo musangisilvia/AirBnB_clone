@@ -31,7 +31,7 @@ class FileStorage():
         Attributes:
             obj (object): object to be set in the __objects dictionary
         """
-        key = obj.__class__.__name__ + obj.id
+        key = obj.__class__.__name__ + "." + obj.id
         self.__objects[key] = obj
 
     def save(self):
