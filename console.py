@@ -95,6 +95,33 @@ class HBNBCommand(cmd.Cmd):
 
         print(obj_list)
 
+    def do_update(self, line):
+        """
+            Updates an instance based on te class name and id
+            by adding or updating attribute(changes saved in json file.)
+            Usage: update <class name> <id> <attribute name>
+            "<attribute value>"
+        """
+        cmds = line.split()
+
+        if len(cmds) == 0:
+            print("** class name is missing **")
+            return
+        try:
+            cmds[2]
+        except IndexError:
+            print("** instance id missing **")
+            return
+        if len(cmds) != 4:
+            print("** attribute name missing **")
+            return
+
+        try:
+            eval(cmds[0])
+        except NameError:
+            print("** class doesn't exist **")
+            return
+
     def do_destroy(self, line):
         """
             Deletes an instance based on the class name and id.
@@ -157,6 +184,10 @@ it.\nUsage: create <ClassName>")
     def help_show(self):
         print("Prints the string representation of an instance \
 based on the class name and id.\nUsage: show <ClassName> <id>.")
+
+    def help_all(self):
+        print("Prints all string representation of all instances.\
+Usage: all or all <ClassName>")
 
     def help_quit(self):
         print("Exit the command line.\nUsage: quit")
