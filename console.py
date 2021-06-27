@@ -28,7 +28,9 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
             return
 
-        if cmds[0] != "BaseModel":
+        try:
+            eval(cmds[0])
+        except NameError:
             print("** class doesn't exist **")
             return
 
@@ -48,6 +50,66 @@ class HBNBCommand(cmd.Cmd):
         if len(cmds) == 0:
             print("** class name missing **")
             return
+        try:
+            eval(cmds[0])
+        except NameError:
+            print("** class doesn't exist **")
+            return
+
+        if len(cmds) == 1:
+            print("** instance id missing **")
+            return
+
+        storage = FileStorage()
+        storage.reload()
+        obj = storage.all()
+        key = cmds[0] + "." + cmds[1]
+
+        try:
+            value = obj[key]
+            print(value)
+        except KeyError:
+            print("** no instance found **")
+
+    def do_all(self, line):
+        """
+            Prints all string representation of all instances based
+            on or not on the class name
+            Usage: all <ClassName> or all
+        """
+        obj_list = []
+        storage = FileStorage()
+        storage.reload()
+        objs = storage.all()
+
+        try:
+            if len(line) != 0:
+                eval(line)
+        except NameError:
+            print("** class doesn't exist **")
+            return
+
+        for key in objs.keys():
+            val = str(objs[key])
+            obj_list.append(val)
+
+        print(obj_list)
+
+    def do_destroy(self, line):
+        """
+            Deletes an instance based on the class name and id.
+            Change is saved.
+            Usage: destroy <ClassName> <id>
+        """
+        cmds = line.split()
+
+        if len(cmds) == 0:
+            print("** class name missing **")
+            return
+
+        if cmds[0] != "BaseModel":
+            print("** class doesn't exist **")
+            return
 
         if len(cmds) == 1:
             print("** instance id missing **")
@@ -57,19 +119,15 @@ class HBNBCommand(cmd.Cmd):
         storage.reload()
         obj = storage.all()
 
-        try:
-            cmds[0]
-        except NameError:
-            print("** class doesn't exist **")
-            return
-
         key = cmds[0] + "." + cmds[1]
 
         try:
-            value = obj[key]
-            print(value)
+            del obj[key]
         except KeyError:
             print("** no instance found **")
+            return
+
+        storage.save()
 
     def emptyline(self):
         """
