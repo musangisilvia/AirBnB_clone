@@ -90,7 +90,8 @@ class HBNBCommand(cmd.Cmd):
             return
 
         for key in objs.keys():
-            val = str(objs[key])
+            val = objs[key].to_dict()
+#            val = str(objs[key])
             obj_list.append(val)
 
         print(obj_list)
@@ -102,6 +103,11 @@ class HBNBCommand(cmd.Cmd):
             Usage: update <class name> <id> <attribute name>
             "<attribute value>"
         """
+        dq1 = line.find('\"')
+        if dq1 != -1:
+            dq2 = line[dq1+1:].find('\"')
+            if dq2 != -1:
+                dq2 = dq1 + dq2 + 1
         cmds = line.split()
 
         if len(cmds) == 0:
@@ -133,6 +139,9 @@ class HBNBCommand(cmd.Cmd):
             print("** no instance found **")
             return
         try:
+            if dq1 != -1:
+                if dq2 != -1:
+                    cmds[3] = line[dq1+1:dq2]
             attr_type = type(getattr(value, cmds[2]))
             cmds[3] = attr_type(cmds[3])
 
