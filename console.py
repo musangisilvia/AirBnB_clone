@@ -96,9 +96,14 @@ class HBNBCommand(cmd.Cmd):
             return
 
         line.strip()
-        for key in objs.keys():
-            val = str(objs[key])
-            obj_list.append(val)
+        for key, val in objs.items():
+            if len(line) != 0:
+                if type(val) is eval(line):
+                    val = str(objs[key])
+                    obj_list.append(val)
+            else:
+                val = str(objs[key])
+                obj_list.append(val)
 
         print(obj_list)
 
@@ -171,7 +176,7 @@ class HBNBCommand(cmd.Cmd):
 
         try:
             eval(cmds[0])
-        except NameEror:
+        except NameError:
             print("** class doesn't exist **")
             return
 
