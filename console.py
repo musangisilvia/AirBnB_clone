@@ -107,13 +107,14 @@ class HBNBCommand(cmd.Cmd):
         if len(cmds) == 0:
             print("** class name is missing **")
             return
-        try:
-            cmds[2]
-        except IndexError:
+        elif len(cmds) == 1:
             print("** instance id missing **")
             return
-        if len(cmds) != 4:
+        elif len(cmds) == 2:
             print("** attribute name missing **")
+            return
+        elif len(cmds) == 3:
+            print("** value missing **")
             return
 
         try:
@@ -121,6 +122,25 @@ class HBNBCommand(cmd.Cmd):
         except NameError:
             print("** class doesn't exist **")
             return
+        key = cmds[0] + "." + cmds[1]
+        storage = FileStorage()
+        storage.reload()
+        objs = storage.all()
+
+        try:
+            value = objs[key]
+        except KeyError:
+            print("** no instance found **")
+            return
+        try:
+            attr_type = type(getattr(value, cmds[2]))
+            cmds[3] = attr_type(cmds[3])
+
+        except AttributeError:
+            pass
+
+        setattr(value, cmds[2], cmds[3])
+        storage.save()
 
     def do_destroy(self, line):
         """
