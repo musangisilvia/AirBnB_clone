@@ -229,6 +229,27 @@ class HBNBCommand(cmd.Cmd):
         """
         return True
 
+    def default(self, line):
+        """Called when an unknown command is received"""
+        cmds = line.split(".")
+
+        try:
+            eval(cmds[0])
+        except NameError:
+            print("** class doesn't exist **")
+            return
+
+        if len(cmds) > 1:
+            if "show" in cmds[1]:
+                obj_id = cmds[1].split('"')[1]
+                msg = cmds[0] + " " + obj_id
+                self.do_show(msg)
+
+            elif "destroy" in cmds[1]:
+                obj_id = cmds[1].split('"')[1]
+                msg = cmds[0] + " " + obj_id
+                self.do_destroy(msg)
+
 # Help functions
 
     def help_create(self):
