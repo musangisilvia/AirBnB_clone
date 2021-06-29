@@ -84,7 +84,7 @@ No known bugs
 
 ## Authors
 
-<p>Eugene Muthui - joemuthui@gmail.com</p>
+<p>Eugene Muthui - jmuthui70@gmail.com</p>
 <p>Silvia Musangi - musangisilvia@gmail.com</p>
 
 
