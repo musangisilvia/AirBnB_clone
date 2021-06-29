@@ -126,23 +126,18 @@ class HBNBCommand(cmd.Cmd):
         if len(cmds) == 0:
             print("** class name is missing **")
             return
-        elif len(cmds) == 1:
-            print("** instance id missing **")
-            return
-        elif len(cmds) == 2:
-            print("** attribute name missing **")
-            return
-        elif len(cmds) == 3:
-            print("** value missing **")
-            return
 
         try:
             eval(cmds[0])
         except NameError:
             print("** class doesn't exist **")
             return
+
+        if len(cmds) == 1:
+            print("** instance id missing **")
+            return
+
         key = cmds[0] + "." + cmds[1]
-#        storage = FileStorage()
         models.storage.reload()
         objs = models.storage.all()
 
@@ -151,6 +146,13 @@ class HBNBCommand(cmd.Cmd):
         except KeyError:
             print("** no instance found **")
             return
+        if len(cmds) == 2:
+            print("** attribute name missing **")
+            return
+        elif len(cmds) == 3:
+            print("** value missing **")
+            return
+
         try:
             if dq1 != -1:
                 if dq2 != -1:
