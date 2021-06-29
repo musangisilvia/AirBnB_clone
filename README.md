@@ -24,11 +24,11 @@ The first piece is to manipulate a powerful storage system. The storage engine g
 
 *Command*  |  *Function*                                 |  *Usage* 
 -----------|---------------------------------------------|-----------
-_create_   | Creates an instance of a class              | + create _class name_
-_show_     | Prints string representation of an instance of a class | + show _class name_ _id_
-_all_      | Prints string representation of all instances of a class | + all (class name is optional)
-_update_   | Adds or updates attributes of an instance. | + update _class name_ _id_ _attribute name_ _attribute value_
-_count_    | Prints the number of intances of a class. | + _class name_.count()
+_create_   | Creates an instance of a class              | +create _classname_
+_show_     | Prints string representation of an instance of a class | +show _classname_ _id_
+_all_      | Prints string representation of all instances of a class | +all (classname is optional)
+_update_   | Adds or updates attributes of an instance. | +update _classname_ _id_ _attributename_ _attributevalue_
+_count_    | Prints the number of intances of a class. | +_classname_.count()
 
 
 ## Bugs
