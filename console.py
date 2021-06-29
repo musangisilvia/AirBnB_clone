@@ -198,6 +198,18 @@ class HBNBCommand(cmd.Cmd):
 
         models.storage.save()
 
+    def default(self, line):
+        """
+            Overrides the default method.
+        """
+        # <class name>.all()
+        cmds = line.split(".")
+        cmds[1] = cmds[1].replace("()", '')
+        
+        if "all" in cmds[1]:
+            line = cmds[1] + " " + cmds[0]
+            self.do_all(line)
+
     def emptyline(self):
         """
             Called when emptyline is entered in response to the prompt.
@@ -229,7 +241,12 @@ based on the class name and id.\nUsage: show <ClassName> <id>.")
 
     def help_all(self):
         print("Prints all string representation of all instances.\
-Usage: all or all <ClassName>")
+\nUsage: all or all <ClassName>")
+
+    def help_update(self):
+        print("Updates an instance based on the class name and id\
+by adding or changing attribute values.\
+\nUsage: update <class name> <id> <attribute name> \"<attribute value>\"")
 
     def help_quit(self):
         print("Exit the command line.\nUsage: quit")
