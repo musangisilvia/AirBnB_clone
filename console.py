@@ -124,7 +124,7 @@ class HBNBCommand(cmd.Cmd):
         cmds = line.split()
 
         if len(cmds) == 0:
-            print("** class name is missing **")
+            print("** class name missing **")
             return
 
         try:
