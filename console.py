@@ -233,6 +233,11 @@ class HBNBCommand(cmd.Cmd):
                 msg = cmds[0] + " " + obj_id
                 self.do_show(msg)
 
+            elif "destroy" in cmds[1]:
+                obj_id = cmds[1].split('"')[1]
+                msg = cmds[0] + " " + obj_id
+                self.do_destroy(msg)
+
 # Help functions
 
     def help_create(self):
