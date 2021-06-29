@@ -292,7 +292,11 @@ class HBNBCommand(cmd.Cmd):
                     for index in range(len(key)):
                         msg = tt + " " + key[index] + ' "' + value[index] + '"'
                         self.do_update(msg)
+                else:
+                    attr_nm = cmds[1].split('"')[3]
+                    attrval = cmds[1].split('"')[5]
 
+                    self.do_update(tt + " " + attr_nm + " \"" + attrval + "\"")
 # Help functions
 
     def help_create(self):
