@@ -169,7 +169,8 @@ class HBNBCommand(cmd.Cmd):
             Counts the number of intances of a class
         """
         try:
-            eval(line)
+            if len(line) != 0:
+                eval(line)
         except NameError:
             print("** class doesn't exist **")
             return
@@ -284,6 +285,10 @@ based on the class name and id.\nUsage: show <ClassName> <id>.")
         print("Updates an instance based on the class name and id\
 by adding or changing attribute values.\
 \nUsage: update <class name> <id> <attribute name> \"<attribute value>\"")
+
+    def help_count(self):
+        print("Prints the number of instances of a class.\
+\nUsage: <class_name>.count() ")
 
     def help_quit(self):
         print("Exit the command line.\nUsage: quit")
