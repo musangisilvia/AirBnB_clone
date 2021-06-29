@@ -91,6 +91,8 @@ class HBNBCommand(cmd.Cmd):
         try:
             if len(line) != 0:
                 eval(line)
+            else:
+                pass
         except NameError:
             print("** class doesn't exist **")
             return
@@ -162,6 +164,26 @@ class HBNBCommand(cmd.Cmd):
         setattr(value, cmds[2], cmds[3])
         models.storage.save()
 
+    def do_count(self, line):
+        """
+            Counts the number of intances of a class
+        """
+        try:
+            eval(line)
+        except NameError:
+            print("** class doesn't exist **")
+            return
+
+        models.storage.reload()
+        objs = models.storage.all()
+        count = 0
+
+        for key in objs.keys():
+            if line in key:
+                count = count + 1
+
+        print(count)
+
     def do_destroy(self, line):
         """
             Deletes an instance based on the class name and id.
@@ -197,18 +219,6 @@ class HBNBCommand(cmd.Cmd):
             return
 
         models.storage.save()
-
-    def default(self, line):
-        """
-            Overrides the default method.
-        """
-        # <class name>.all()
-        cmds = line.split(".")
-        cmds[1] = cmds[1].replace("()", '')
-        
-        if "all" in cmds[1]:
-            line = cmds[1] + " " + cmds[0]
-            self.do_all(line)
 
     def emptyline(self):
         """
@@ -249,6 +259,12 @@ class HBNBCommand(cmd.Cmd):
                 obj_id = cmds[1].split('"')[1]
                 msg = cmds[0] + " " + obj_id
                 self.do_destroy(msg)
+            elif "all" in cmds[1]:
+                msg = cmds[0]
+                self.do_all(msg)
+            elif "count" in cmds[1]:
+                msg = cmds[0]
+                self.do_count(msg)
 
 # Help functions
 
