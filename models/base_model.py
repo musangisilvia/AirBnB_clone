@@ -7,6 +7,7 @@ import uuid
 from datetime import datetime
 import models
 
+
 class BaseModel():
     """Definition of the class BaseModel. Defines all common attributes and
        methods for other classes in the AirBnB project

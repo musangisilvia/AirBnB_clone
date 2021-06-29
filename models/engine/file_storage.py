@@ -53,7 +53,7 @@ class FileStorage():
            otherwise does nothing
         """
         if os.path.isfile(self.__file_path):
-            with open(self.__file_path, mode='r', encoding='UTF-8') as json_file:
+            with open(self.__file_path, 'r', encoding='UTF-8') as json_file:
                 obj_dicts = json.load(json_file)
 
             my_objs = {}
