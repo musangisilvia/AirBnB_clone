@@ -12,12 +12,9 @@ It implements only some of the features that cover fundamental concepts of the h
 This project will be built step by step not all at once. It has different components.
 
 ### The console
-
-This step consists of:
-
-	- creating a data model
-	- manage (create, update, destroy, read) objects via a console / command interpreter
-	- store and persists objects to a file (JSON file)
+-  creating a data model
+-  manage (create, update, destroy, read) objects via a console / command interpreter
+-  store and persists objects to a file (JSON file)
 
 The first piece is to manipulate a powerful storage system. The storage engine gives an abstraction between the objects and how they are stored an persisted. It will allow easy change in storage without need to update the entire codebase.
 
@@ -27,11 +24,11 @@ The first piece is to manipulate a powerful storage system. The storage engine g
 
 *Command*  |  *Function*                                 |  *Usage* 
 -----------|---------------------------------------------|-----------
-_create_   | Creates an instance of a class              | create _class name_
-_show_     | Prints string representation of an instance of a class | show _class name_ _id_
-_all_      | Prints string representation of all instances of a class | all (class name is optional)
-_update_   | Adds or updates attributes of an instance. | update _class name_ _id_ _attribute name_ _attribute value_
-_count_    | Prints the number of intances of a class. | _class name_.count()
+_create_   | Creates an instance of a class              | + create _class name_
+_show_     | Prints string representation of an instance of a class | + show _class name_ _id_
+_all_      | Prints string representation of all instances of a class | + all (class name is optional)
+_update_   | Adds or updates attributes of an instance. | + update _class name_ _id_ _attribute name_ _attribute value_
+_count_    | Prints the number of intances of a class. | + _class name_.count()
 
 
 ## Bugs
@@ -40,8 +37,12 @@ No known bugs
 
 ## Authors
 
-Eugene Muthui - joemuthui@gmail.com
-Silvia Musangi - musangisilvia@gmail.com
+<p>Eugene Muthui - joemuthui@gmail.com</p>
+<p>Silvia Musangi - musangisilvia@gmail.com</p>
+
+
+
+
 
 
 _23rd June 2021_
