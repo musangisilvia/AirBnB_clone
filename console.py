@@ -260,12 +260,38 @@ class HBNBCommand(cmd.Cmd):
                 obj_id = cmds[1].split('"')[1]
                 msg = cmds[0] + " " + obj_id
                 self.do_destroy(msg)
+
             elif "all" in cmds[1]:
                 msg = cmds[0]
                 self.do_all(msg)
+
             elif "count" in cmds[1]:
                 msg = cmds[0]
                 self.do_count(msg)
+
+            elif "update" in cmds[1]:
+                obj_id = cmds[1].split('"')[1]
+                tt = cmds[0] + " " + obj_id
+                if '{' in cmds[1]:
+                    tmp = cmds[1].split('{')[1]
+                    tmp = tmp.replace("})", "")
+                    tmp = tmp.replace('"', "")
+                    tmp = tmp.replace("'", "")
+                    tmp = tmp.replace(",", "")
+                    tmp = tmp.replace(":", "")
+                    tmps = tmp.split()
+
+                    key = []
+                    value = []
+                    for index in range(len(tmps)):
+                        if index % 2 == 0:
+                            key.append(tmps[index])
+                        else:
+                            value.append(tmps[index])
+
+                    for index in range(len(key)):
+                        msg = tt + " " + key[index] + ' "' + value[index] + '"'
+                        self.do_update(msg)
 
 # Help functions
 
