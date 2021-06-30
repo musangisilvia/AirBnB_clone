@@ -15,7 +15,7 @@ class TestAmenityMethods(unittest.TestCase):
 
     def test_Amenity_attributes(self):
         """
-           Test whether the attributes of 
+           Test whether the attributes of
            class Amenity are of the right type
         """
         amenity_1 = Amenity()
