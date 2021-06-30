@@ -3,6 +3,7 @@
     Contains the tests for the FileStorage class
 """
 import unittest
+from models import storage
 from models.engine.file_storage import FileStorage
 from models.base_model import BaseModel
 import os
@@ -14,7 +15,6 @@ class TestFileStorage(unittest.TestCase):
         """Sets up the resources required to run tests"""
         if os.path.isfile('my_file.json'):
             os.rename('my_file.json', 'tmp_file.json')
-        self.storage1 = FileStorage()
         self.model1 = BaseModel()
 
     def tearDown(self):
@@ -23,7 +23,6 @@ class TestFileStorage(unittest.TestCase):
             os.remove('my_file.json')
         if os.path.isfile('tmp_file.json'):
             os.rename('tmp_file.json', 'my_file.json')
-        del self.storage1
         del self.model1
 
     def test_attributes_exist(self):
@@ -37,12 +36,12 @@ class TestFileStorage(unittest.TestCase):
 
     def test_attributes(self):
         """Test whether the type of FileStorage class attributes is correct"""
-        self.assertEqual(self.storage1._FileStorage__file_path, 'my_file.json')
-        self.assertIsInstance(self.storage1._FileStorage__objects, dict)
+        self.assertEqual(storage._FileStorage__file_path, 'my_file.json')
+        self.assertIsInstance(storage._FileStorage__objects, dict)
 
     def test_all(self):
         """Test that the all method returns the correct dictionary"""
-        my_dict = self.storage1.all()
+        my_dict = storage.all()
         my_id = 'BaseModel.' + self.model1.id
         self.assertIsInstance(my_dict, dict)
         self.assertIn(my_id, my_dict)
@@ -54,6 +53,6 @@ class TestFileStorage(unittest.TestCase):
         tmp_obj = BaseModel()
         tmp_id = 'BaseModel.' + tmp_obj.id
         tmp_obj.save()
-        del self.storage1._FileStorage__objects[tmp_id]
-        self.storage1.reload()
-        self.assertIn(tmp_id, self.storage1.all())
+        del storage._FileStorage__objects[tmp_id]
+        storage.reload()
+        self.assertIn(tmp_id, storage.all())
