@@ -10,7 +10,10 @@ class TestAmenityMethods(unittest.TestCase):
     """Definition of tests for class Amenity"""
 
     def test_Amenity_attributes(self):
-        """Test whether the attributes of class Amenity are of the right type"""
+        """
+           Test whether the attributes of 
+           class Amenity are of the right type
+        """
         amenity_1 = Amenity()
         self.assertIsInstance(amenity_1.name, str)
 

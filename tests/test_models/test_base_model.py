@@ -30,14 +30,16 @@ class TestBaseModelMethods(unittest.TestCase):
 
     def test_kwargs_initialization(self):
         """Test the initialization of a class using kwargs"""
-        kwargs =  {"__class__": "BaseModel", "created_at":
-                   "2021-06-25T19:52:36.252305",
-                   "id": "83b3c8a8-b72b-4472-9d80-c52b2e090f04",
-                   "updated_at": "2021-06-25T19:52:36.252312"}
+        kwargs = {"__class__": "BaseModel", "created_at":
+                  "2021-06-25T19:52:36.252305",
+                  "id": "83b3c8a8-b72b-4472-9d80-c52b2e090f04",
+                  "updated_at": "2021-06-25T19:52:36.252312"}
         Test_Base = BaseModel(**kwargs)
         self.assertEqual(Test_Base.id, kwargs['id'])
-        self.assertEqual(Test_Base.created_at.isoformat(), kwargs['created_at'])
-        self.assertEqual(Test_Base.updated_at.isoformat(), kwargs['updated_at'])
+        self.assertEqual(Test_Base.created_at.isoformat(),
+                         kwargs['created_at'])
+        self.assertEqual(Test_Base.updated_at.isoformat(),
+                         kwargs['updated_at'])
 
     def test_str_representation(self):
         """Test the format of the return value of the __str__ method"""
