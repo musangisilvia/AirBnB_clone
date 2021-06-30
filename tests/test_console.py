@@ -7,8 +7,14 @@ import os
 import unittest
 from models import storage
 from models.base_model import BaseModel
-from io import StringIO
+from models.user import User
+from models.state import State
+from models.city import City
+from models.place import Place
+from models.amenity import Amenity
+from models.review import Review
 from console import HBNBCommand
+from io import StringIO
 from unittest.mock import patch
 
 def setUpModule():
@@ -88,6 +94,47 @@ class TestHBNBCommand_show(unittest.TestCase):
                 self.assertFalse(HBNBCommand().
                                  onecmd('show {} {}'.format(inst[0], inst[1])))
                 self.assertEqual(value_str, f.getvalue().strip())
+
+class TestHBNBCommand_destroy(unittest.TestCase):
+    """Test the HBNBCommand destroy command"""
+
+    def test_HBNBCommand_destroy_error_messages(self):
+        """Test that the destroy comand prints the correct error messages"""
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.assertFalse(HBNBCommand().onecmd('destroy'))
+            self.assertEqual("** class name missing **", f.getvalue().strip())
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.assertFalse(HBNBCommand().onecmd('destroy MyModel'))
+            self.assertEqual("** class doesn't exist **", f.getvalue().strip())
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.assertFalse(HBNBCommand().onecmd('destroy BaseModel'))
+            self.assertEqual("** instance id missing **", f.getvalue().strip())
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.assertFalse(HBNBCommand().onecmd('destroy BaseModel 12234321'))
+            self.assertEqual("** no instance found **", f.getvalue().strip())
+
+    def test_HBNBCommand_destroy_existing_instances(self):
+        """Test the destruction of new instances of different classes"""
+
+        Mm = ['BaseModel', 'User', 'Place',
+             'City', 'State', 'Review', 'Amenity']
+        my_objs = {}
+        for m in Mm:
+            tmp = eval(m)()
+            tmp.save()
+            tmp_id = m + "." + tmp.id
+            my_objs[tmp_id] = tmp
+        for key in my_objs.keys():
+            kk = key.split(".")
+            with patch('sys.stdout', new=StringIO()) as f:
+                self.assertFalse(HBNBCommand().
+                                 onecmd('destroy {} {}'.format(kk[0], kk[1])))
+                objs = storage.all()
+                self.assertNotIn(kk[1], objs.keys())
 
 class TestHBNBCommand_all(unittest.TestCase):
     """Test the HBNBCommand all command"""
