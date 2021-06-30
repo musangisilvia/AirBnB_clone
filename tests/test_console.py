@@ -37,6 +37,12 @@ class TestHBNBCommand(unittest.TestCase):
         """Test the HBNBCommand prompt"""
         self.assertEqual(HBNBCommand.prompt, '(hbnb) ')
 
+    def test_empty_line(self):
+        """Test output when an empty line is passed"""
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.assertFalse(HBNBCommand().onecmd(""))
+            self.assertEqual("", f.getvalue().strip())
+
 class TestHBNBCommand_create(unittest.TestCase):
     """Test the HBNBCommand create command"""
 
@@ -216,6 +222,72 @@ class TestHBNBCommand_update(unittest.TestCase):
                                                   format(key[0], key[1])))
             self.assertIn('name', f.getvalue().strip())
             self.assertIn('Silvia', f.getvalue().strip())
+
+
+class TestHelpFunctionality(unittest.TestCase):
+    """Test the help command functionality"""
+
+    def test_help_no_argument(self):
+        """Test output when help command used without argument"""
+        msg = ("Documented commands (type help <topic>):\n"
+               "========================================\n"
+               "EOF  all  count  create  destroy  help  quit  show  update")
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.assertFalse(HBNBCommand().onecmd("help"))
+            self.assertEqual(msg, f.getvalue().strip())
+
+    def test_help_EOF(self):
+        """ test the help with with EOF """
+
+        msg = ("Exit the command line")
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.assertFalse(HBNBCommand().onecmd("help EOF"))
+            self.assertEqual(msg, f.getvalue().strip())
+
+    def test_help_all(self):
+        """ test the help with with all """
+
+        msg = ("Prints all string representation of all instances.\
+\nUsage: all or all <ClassName>")
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.assertFalse(HBNBCommand().onecmd("help all"))
+            self.assertEqual(msg, f.getvalue().strip())
+
+    def test_help_create(self):
+        """ test the help with create """
+
+        msg = ("Creates a new instance of BaseModel and saves \
+it.\nUsage: create <ClassName>")
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.assertFalse(HBNBCommand().onecmd("help create"))
+            self.assertEqual(msg, f.getvalue().strip())
+
+    def test_help_quit(self):
+        """ test the help with quit """
+
+        msg = ("Exit the command line.\nUsage: quit")
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.assertFalse(HBNBCommand().onecmd("help quit"))
+            self.assertEqual(msg, f.getvalue().strip())
+
+    def test_help_show(self):
+        """ test the help with show """
+
+        msg = ("Prints the string representation of an instance \
+based on the class name and id.\nUsage: show <ClassName> <id>.")
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.assertFalse(HBNBCommand().onecmd("help show"))
+            self.assertEqual(msg, f.getvalue().strip())
+
+    def test_help_update(self):
+        """ test the help with update """
+
+        msg = ("Updates an instance based on the class name and id\
+by adding or changing attribute values.\
+\nUsage: update <class name> <id> <attribute name> \"<attribute value>\"")
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.assertFalse(HBNBCommand().onecmd("help update"))
+            self.assertEqual(msg, f.getvalue().strip())
 
 if __name__ == '__main__':
     unittest.main()
