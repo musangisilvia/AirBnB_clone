@@ -47,7 +47,8 @@ class TestHBNBCommand_create(unittest.TestCase):
     def test_HBNBCommand_create_new_instances(self):
         """Test the creation of new instances of different classes"""
 
-        Mm = ['BaseModel', 'User', 'Place', 'City', 'State', 'Review', 'Amenity']
+        Mm = ['BaseModel', 'User', 'Place',
+             'City', 'State', 'Review', 'Amenity']
         for m in Mm:
             with patch('sys.stdout', new=StringIO()) as f:
                 self.assertFalse(HBNBCommand().onecmd('create {}'.format(m)))
@@ -100,12 +101,74 @@ class TestHBNBCommand_all(unittest.TestCase):
 
     def test_HBNBCommand_all_existing_instances(self):
         """Test the creation of new instances of different classes"""
+
+        objs = storage.all()
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.assertFalse(HBNBCommand().onecmd('all'))
+            for key, value in objs.items():
+                inst_key = key.split(".")[1]
+                self.assertIn(inst_key, f.getvalue().strip())
+
+    def test_HBNBCommand_all_existing_instances_specific_class(self):
+        """Test the creation of new instances of different classes"""
+
+        Mm = ['BaseModel', 'User', 'Place',
+             'City', 'State', 'Review', 'Amenity']
+        for m in Mm:
+            with patch('sys.stdout', new=StringIO()) as f:
+                self.assertFalse(HBNBCommand().onecmd('all {}'.format(m)))
+                for n in Mm:
+                    if n != m:
+                        self.assertNotIn(n, f.getvalue().strip())
+
+class TestHBNBCommand_update(unittest.TestCase):
+    """Test the HBNBCommand update command"""
+
+    def test_HBNBCommand_update_error_messages(self):
+        """Test that the update comand prints the correct error messages"""
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.assertFalse(HBNBCommand().onecmd('update'))
+            self.assertEqual("** class name missing **", f.getvalue().strip())
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.assertFalse(HBNBCommand().onecmd('update MyModel'))
+            self.assertEqual("** class doesn't exist **", f.getvalue().strip())
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.assertFalse(HBNBCommand().onecmd('update BaseModel'))
+            self.assertEqual("** instance id missing **", f.getvalue().strip())
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.assertFalse(HBNBCommand().onecmd('update BaseModel 12234321'))
+            self.assertEqual("** no instance found **", f.getvalue().strip())
+
         objs = storage.all()
         for key, value in objs.items():
-            inst_key = key.split(".")[1]
+            kk = key.split(".")
             with patch('sys.stdout', new=StringIO()) as f:
-                self.assertFalse(HBNBCommand().onecmd('all'))
-                self.assertIn(inst_key, f.getvalue().strip())
+                self.assertFalse(HBNBCommand().onecmd('update {} {}'.
+                                                      format(kk[0], kk[1])))
+                self.assertEqual("** attribute name missing **",
+                                 f.getvalue().strip())
+
+            with patch('sys.stdout', new=StringIO()) as f:
+                self.assertFalse(HBNBCommand().onecmd('update {} {} id'.
+                                                      format(kk[0], kk[1])))
+                self.assertEqual("** value missing **",
+                                 f.getvalue().strip())
+
+    def test_HBNBCommand_update_existing_instance(self):
+        """Test the creation of new instances of different classes"""
+        objs = storage.all()
+        key = list(objs.keys())[0].split(".")
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.assertFalse(HBNBCommand().onecmd('update {} {} name Silvia'.
+                                                  format(key[0], key[1])))
+            self.assertFalse(HBNBCommand().onecmd('show {} {}'.
+                                                  format(key[0], key[1])))
+            self.assertIn('name', f.getvalue().strip())
+            self.assertIn('Silvia', f.getvalue().strip())
 
 if __name__ == '__main__':
     unittest.main()
