@@ -129,19 +129,25 @@ class TestHBNBCommand_dot_show(unittest.TestCase):
         """
             Test the .show() command for an existing instance
         """
-        objs = storage.all()
-        for key, value in objs.items():
-            inst = key.split(".")
-            value_str = str(value)
+        Mm = ['BaseModel', 'User', 'Place',
+              'City', 'State', 'Review', 'Amenity']
+        my_objs = {}
+        for m in Mm:
+            tmp = eval(m)()
+            tmp.save()
+            tmp_id = m + "." + tmp.id
+            my_objs[tmp_id] = tmp
+        for key, val in my_objs.items():
+            kk = key.split(".")
+            value_str = str(val)
             with patch('sys.stdout', new=StringIO()) as f:
                 self.assertFalse(HBNBCommand().onecmd('{}.\
-                                 show("{}")'.format(inst[0], inst[1])))
+                                 show("{}")'.format(kk[0], kk[1])))
                 self.assertEqual(value_str, f.getvalue().strip())
 
 
 class TestHBNBCommand_destroy(unittest.TestCase):
     """Test the HBNBCommand destroy command"""
-
     def test_HBNBCommand_destroy_error_messages(self):
         """Test that the destroy comand prints the correct error messages"""
 
@@ -185,7 +191,7 @@ class TestHBNBCommand_destroy(unittest.TestCase):
 class TestHBNBCommand_dot_destroy(unittest.TestCase):
     """Test the HBNBCommand .destroy(<id>) command"""
 
-    def test_HBNBCommand_destroy_error_messages(self):
+    def test_HBNBCommand_dot_destroy_error_messages(self):
         """
             Test that the .destroy() comand prints the correct error messages
         """
@@ -257,6 +263,32 @@ class TestHBNBCommand_all(unittest.TestCase):
                         self.assertNotIn(n, f.getvalue().strip())
 
 
+class TestHBNBCommand_dot_all(unittest.TestCase):
+    """
+        Test the HBNBCommand .all()
+    """
+    def test_HBNBCommand_dot_all_error_messages(self):
+        """
+            Test is .all() command prints the correct error messages
+        """
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.assertFalse(HBNBCommand().onecmd('MyModel.all()'))
+            self.assertEqual("** class doesn't exist **", f.getvalue().strip())
+
+    def test_HBNBCommand_dot_all_existing_instances(self):
+        """
+            Test the .all() command with existing instances
+        """
+        Mm = ['BaseModel', 'User', 'Place',
+              'City', 'State', 'Review', 'Amenity']
+        for m in Mm:
+            with patch('sys.stdout', new=StringIO()) as f:
+                self.assertFalse(HBNBCommand().onecmd('{}.all()'.format(m)))
+                for n in Mm:
+                    if n != m:
+                        self.assertNotIn(n, f.getvalue().strip())
+
+
 class TestHBNBCommand_update(unittest.TestCase):
     """Test the HBNBCommand update command"""
 
@@ -305,6 +337,42 @@ class TestHBNBCommand_update(unittest.TestCase):
                                                   format(key[0], key[1])))
             self.assertIn('name', f.getvalue().strip())
             self.assertIn('Silvia', f.getvalue().strip())
+
+
+class TestHBNBCommand_dot_update(unittest.TestCase):
+    """
+        Test .update() command
+    """
+    def test_HBNBCommand_update_error_messages(self):
+        """
+            Test .update() prints the correct error messages
+        """
+        Mm = ['BaseModel', 'User', 'Place',
+              'City', 'State', 'Review', 'Amenity']
+        my_objs = {}
+        for m in Mm:
+            tmp = eval(m)()
+            tmp.save()
+            tmp_id = m + "." + tmp.id
+            my_objs[tmp_id] = tmp
+        for key in my_objs.keys():
+            kk = key.split(".")
+            with patch('sys.stdout', new=StringIO()) as f:
+                self.assertFalse(HBNBCommand().onecmd('{:s}\
+                                 .update("","","")'.format(kk[0])))
+                self.assertEqual("** no instance found **",
+                                 f.getvalue().strip())
+
+            with patch('sys.stdout', new=StringIO()) as f:
+                self.assertFalse(HBNBCommand().onecmd('{:s}.\
+                                 update("{}","","")'.format(kk[0], kk[1])))
+                self.assertEqual("** value missing **", f.getvalue().strip())
+
+            with patch('sys.stdout', new=StringIO()) as f:
+                self.assertFalse(HBNBCommand().onecmd('{:s}.\
+                                 .update("{}","{}","")'.format(kk[0],
+                                 kk[1], "last_name")))
+                self.assertEqual("", f.getvalue().strip())
 
 
 class TestHelpFunctionality(unittest.TestCase):
