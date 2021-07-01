@@ -22,6 +22,16 @@ class TestBaseModelMethods(unittest.TestCase):
         del self.base_1
         del self.base_2
 
+    def test_attributes_exist(self):
+        """Test that class BaseModel has the required methods and attributes"""
+        self.assertTrue(hasattr(BaseModel, '__init__'))
+        self.assertTrue(hasattr(self.base_1, 'id'))
+        self.assertTrue(hasattr(self.base_1, 'created_at'))
+        self.assertTrue(hasattr(self.base_1, 'updated_at'))
+        self.assertTrue(hasattr(self.base_1, 'save'))
+        self.assertTrue(hasattr(self.base_1, 'to_dict'))
+        self.assertTrue(hasattr(BaseModel, '__str__'))
+
     def test_unique_IDs(self):
         """Test that two instances of BaseModel class are assigned different
             unique IDs
@@ -78,6 +88,7 @@ class Test_Base_Model_save(unittest.TestCase):
     def test_updated_at_save(self):
         """Test updated_at attribute is actually updated"""
         time_1 = self.base_1.updated_at
+        sleep(.5)
         self.base_1.save()
         self.assertNotEqual(time_1, self.base_1.updated_at)
         self.assertLess(time_1, self.base_1.updated_at)
