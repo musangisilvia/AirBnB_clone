@@ -88,6 +88,7 @@ class Test_Base_Model_save(unittest.TestCase):
     def test_updated_at_save(self):
         """Test updated_at attribute is actually updated"""
         time_1 = self.base_1.updated_at
+        sleep(.5)
         self.base_1.save()
         self.assertNotEqual(time_1, self.base_1.updated_at)
         self.assertLess(time_1, self.base_1.updated_at)
