@@ -24,9 +24,9 @@ The first piece is to manipulate a powerful storage system. The storage engine g
 
 The console can be used both interactively and non-interactively.
 
-``` 
-# *Interactive Mode*
 
+#### *Interactive Mode*
+```
 $ ./console.py
 (hbnb) help
 
@@ -41,9 +41,9 @@ $
 
 ```
 
-``` 
-# *Non-Interactive Mode*
-
+ 
+#### *Non-Interactive Mode*
+```
 $ echo "help" | ./console.py
 (hbnb)
 
