@@ -105,6 +105,40 @@ class TestHBNBCommand_show(unittest.TestCase):
                 self.assertEqual(value_str, f.getvalue().strip())
 
 
+class TestHBNBCommand_dot_show(unittest.TestCase):
+    """ Test the .show() command"""
+
+    def test_HBNBCommand_dot_show_error_messages(self):
+        """
+            Test that the .show() comand prints the correct error messages
+        """
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.assertFalse(HBNBCommand().onecmd('MyModel.show("")'))
+            self.assertEqual("** class doesn't exist **", f.getvalue().strip())
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.assertFalse(HBNBCommand().onecmd('BaseModel.show("")'))
+            self.assertEqual("** instance id missing **", f.getvalue().strip())
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.assertFalse(HBNBCommand().
+                             onecmd('BaseModel.show("12234321")'))
+            self.assertEqual("** no instance found **", f.getvalue().strip())
+
+    def test_HBNBCommand_dot_show_existing_instance(self):
+        """
+            Test the .show() command for an existing instance
+        """
+        objs = storage.all()
+        for key, value in objs.items():
+            inst = key.split(".")
+            value_str = str(value)
+            with patch('sys.stdout', new=StringIO()) as f:
+                self.assertFalse(HBNBCommand().onecmd('{}.\
+                                 show("{}")'.format(inst[0], inst[1])))
+                self.assertEqual(value_str, f.getvalue().strip())
+
+
 class TestHBNBCommand_destroy(unittest.TestCase):
     """Test the HBNBCommand destroy command"""
 
@@ -144,6 +178,48 @@ class TestHBNBCommand_destroy(unittest.TestCase):
             with patch('sys.stdout', new=StringIO()) as f:
                 self.assertFalse(HBNBCommand().
                                  onecmd('destroy {} {}'.format(kk[0], kk[1])))
+                objs = storage.all()
+                self.assertNotIn(kk[1], objs.keys())
+
+
+class TestHBNBCommand_dot_destroy(unittest.TestCase):
+    """Test the HBNBCommand .destroy(<id>) command"""
+
+    def test_HBNBCommand_destroy_error_messages(self):
+        """
+            Test that the .destroy() comand prints the correct error messages
+        """
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.assertFalse(HBNBCommand().onecmd('Mymodel.destroy("w")'))
+            self.assertEqual("** class doesn't exist **", f.getvalue().strip())
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.assertFalse(HBNBCommand().onecmd('BaseModel.destroy("")'))
+            self.assertEqual("** instance id missing **", f.getvalue().strip())
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.assertFalse(HBNBCommand().
+                             onecmd('BaseModel.destroy("12234321")'))
+            self.assertEqual("** no instance found **", f.getvalue().strip())
+
+    def test_HBNBCommand_dot_destroy_existing_instances(self):
+        """
+            Test the destruction of existing instances of different
+            classes using .destroy(<id>)
+        """
+        Mm = ['BaseModel', 'User', 'Place',
+              'City', 'State', 'Review', 'Amenity']
+        my_objs = {}
+        for m in Mm:
+            tmp = eval(m)()
+            tmp.save()
+            tmp_id = m + "." + tmp.id
+            my_objs[tmp_id] = tmp
+        for key in my_objs.keys():
+            kk = key.split(".")
+            with patch('sys.stdout', new=StringIO()) as f:
+                self.assertFalse(HBNBCommand().onecmd('{}\
+                                 .destroy("{}")'.format(kk[0], kk[1])))
                 objs = storage.all()
                 self.assertNotIn(kk[1], objs.keys())
 
