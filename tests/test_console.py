@@ -343,7 +343,7 @@ class TestHBNBCommand_dot_update(unittest.TestCase):
     """
         Test .update() command
     """
-    def test_HBNBCommand_update_error_messages(self):
+    def test_HBNBCommand_dot_update_error_messages(self):
         """
             Test .update() prints the correct error messages
         """
@@ -368,11 +368,6 @@ class TestHBNBCommand_dot_update(unittest.TestCase):
                                  .update(" "," "," ")'.format(kk[0])))
                 self.assertEqual("** no instance found **",
                                  f.getvalue().strip())
-
-            with patch('sys.stdout', new=StringIO()) as f:
-                self.assertFalse(HBNBCommand().onecmd('{}.\
-                                 update("{}"," "," ")'.format(kk[0], kk[1])))
-                self.assertEqual("** value missing **", f.getvalue().strip())
 
     def test_HBNBCommand_dot_update_existing_instance(self):
         """
@@ -426,6 +421,15 @@ class TestHelpFunctionality(unittest.TestCase):
 it.\nUsage: create <ClassName>")
         with patch('sys.stdout', new=StringIO()) as f:
             self.assertFalse(HBNBCommand().onecmd("help create"))
+            self.assertEqual(msg, f.getvalue().strip())
+    def test_help_destroy(self):
+        """
+            test the help with create
+        """
+        msg = "Deletes an instance based on the class name and id.\
+\nUsage: destroy <ClassName> <id>"
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.assertFalse(HBNBCommand().onecmd("help destroy"))
             self.assertEqual(msg, f.getvalue().strip())
 
     def test_help_quit(self):
