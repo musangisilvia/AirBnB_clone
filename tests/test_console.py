@@ -358,21 +358,36 @@ class TestHBNBCommand_dot_update(unittest.TestCase):
         for key in my_objs.keys():
             kk = key.split(".")
             with patch('sys.stdout', new=StringIO()) as f:
-                self.assertFalse(HBNBCommand().onecmd('{:s}\
-                                 .update("","","")'.format(kk[0])))
+                self.assertFalse(HBNBCommand().onecmd('{}\
+                                 .update(" ", " ", " ")'.format("MyModel")))
+                self.assertEqual("** class doesn't exist **",
+                                 f.getvalue().strip())
+
+            with patch('sys.stdout', new=StringIO()) as f:
+                self.assertFalse(HBNBCommand().onecmd('{}\
+                                 .update(" "," "," ")'.format(kk[0])))
                 self.assertEqual("** no instance found **",
                                  f.getvalue().strip())
 
             with patch('sys.stdout', new=StringIO()) as f:
-                self.assertFalse(HBNBCommand().onecmd('{:s}.\
-                                 update("{}","","")'.format(kk[0], kk[1])))
+                self.assertFalse(HBNBCommand().onecmd('{}.\
+                                 update("{}"," "," ")'.format(kk[0], kk[1])))
                 self.assertEqual("** value missing **", f.getvalue().strip())
 
-            with patch('sys.stdout', new=StringIO()) as f:
-                self.assertFalse(HBNBCommand().onecmd('{:s}.\
-                                 .update("{}","{}","")'.format(kk[0],
-                                 kk[1], "last_name")))
-                self.assertEqual("", f.getvalue().strip())
+    def test_HBNBCommand_dot_update_existing_instance(self):
+        """
+            Test .update() command with existing instance
+        """
+        objs = storage.all()
+        key = list(objs.keys())[0].split(".")
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.assertFalse(HBNBCommand().onecmd('{}.update("{}",\
+                                                  "name", "Silvia")'.
+                                                  format(key[0], key[1])))
+            self.assertFalse(HBNBCommand().onecmd('show {} {}'.
+                                                  format(key[0], key[1])))
+            self.assertIn('name', f.getvalue().strip())
+            self.assertIn('Silvia', f.getvalue().strip())
 
 
 class TestHelpFunctionality(unittest.TestCase):
