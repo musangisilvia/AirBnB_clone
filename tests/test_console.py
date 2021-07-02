@@ -456,6 +456,7 @@ class TestHBNBCommand_dot_count(unittest.TestCase):
             self.assertFalse(HBNBCommand().onecmd("Review.count()"))
             self.assertEqual("2", f.getvalue().strip())
 
+
 class TestHelpFunctionality(unittest.TestCase):
     """Test the help command functionality"""
 
