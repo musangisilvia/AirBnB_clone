@@ -13,20 +13,3 @@ body {
     margin-bottom: 30px;
     position: relative;
 }
-
-.container .filters button {
-    font-size: 18px;
-    border: 0;
-    background-color: #FF5A5F;
-    color: #FFFFFF;
-    height: 48px;
-    width: 20%;
-    border-radius: 4px;
-    position: absolute;
-    top: 12px;
-    right: 30px;
-}
-
-.container .filters button:hover {
-    opacity: 90%;
-}
