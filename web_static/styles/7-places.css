@@ -1,11 +1,13 @@
+section.places {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
 section.places h1{
     text-align: left;
     font-size: 30px;
-}
-section.places div {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
+    width: 100%;
 }
 section.places article {
     width: 390px;
@@ -13,7 +15,6 @@ section.places article {
     margin: 20px;
     border: 1px solid #ff5a5f;
     border-radius: 4px;
-    flex-direction: row;
 }
 
 section.places article h2 {

@@ -37,6 +37,7 @@ div.popover {
     border-radius: 4px;
     position: absolute;
     margin-top: -0.4%;
+    margin-left: -0.1%;
     flex-direction: column;
 }
 
