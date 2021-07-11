@@ -1,8 +1,9 @@
 footer {
+    margin-top: auto;
     background-color: white;
     height: 60px;
     width: 100%;
-    position: absolute;
+    position: sticky;
     bottom: 0;
     text-align: center;
     border-top: 1px solid #CCCCCC;
